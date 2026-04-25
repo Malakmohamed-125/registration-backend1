@@ -8,10 +8,7 @@ const { createPool } = require('mysql2/promise');
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: 'https://registration-frontend1-production.up.railway.app',
-  methods: ['GET', 'POST', 'DELETE'],
-}));
+app.use(cors());
 
 const db = createPool({
     // Use the exact keys from your docker-compose.yml environment section
@@ -164,7 +161,6 @@ app.delete('/teacher/:id', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3500;
-app.listen(PORT, () => {
-    console.log("listening on Port " + PORT);
-}); 
+app.listen(3500, () => {
+    console.log("listening on Port 3500");
+});
