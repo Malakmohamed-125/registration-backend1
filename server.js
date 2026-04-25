@@ -8,7 +8,10 @@ const { createPool } = require('mysql2/promise');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://registration-frontend1-production.up.railway.app',
+  methods: ['GET', 'POST', 'DELETE'],
+}));
 
 const db = createPool({
     // Use the exact keys from your docker-compose.yml environment section
