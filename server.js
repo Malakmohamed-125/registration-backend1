@@ -1,3 +1,4 @@
+console.log("🚀 Server file is running...");
 const express = require('express');
 const mysql = require('mysql2/promise'); // Use mysql2/promise for async/await support
 const cors = require('cors');
@@ -11,14 +12,11 @@ app.use(express.json());
 app.use(cors());
 
 const db = createPool({
-    host: process.env.MYSQL_HOST || 'db',
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PASSWORD || 'mysql123',
-    database: process.env.MYSQL_DATABASE || 'school',
-    connectionLimit: 10,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    connectionLimit: 10
 });
 
 process.on('unhandledRejection', (reason, promise) => {
@@ -60,8 +58,13 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/student', async (req, res) => {
-    const [data] = await db.query("SELECT * FROM student");
-    return res.json(data);
+    try {
+        const [data] = await db.query("SELECT * FROM student");
+        return res.json(data);
+    } catch (error) {
+        console.error("DB ERROR:", error);
+        return res.status(500).json({ error: "Database error" });
+    }
 });
 
 app.get('/teacher', async (req, res) => {
